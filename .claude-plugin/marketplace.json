@@ -1,0 +1,20 @@
+{
+  "name": "ai-eng-marketplace",
+  "owner": { "name": "Innogrators", "email": "philipp.koestner@innogrators.com" },
+  "metadata": {
+    "description": "Reusable AI-engineering framework for Claude Code: spec-first workflow, quality skills, reviewer subagents, and enforcement templates (CI gates, hooks).",
+    "version": "1.1.0"
+  },
+  "plugins": [
+    {
+      "name": "ai-eng-framework",
+      "source": "./plugins/ai-eng-framework",
+      "description": "Lean core: lifecycle skills (spec -> design -> implement -> qa -> deploy), quality skills (review-change, unit-testing, secure-coding), 3 core reviewer subagents, and enforcement templates (CI quality gates, opt-in hooks)."
+    },
+    {
+      "name": "ai-eng-reviewers-extended",
+      "source": "./plugins/ai-eng-reviewers-extended",
+      "description": "Optional: additional specialized reviewer/advisor subagents. Install only when a project needs them."
+    }
+  ]
+}

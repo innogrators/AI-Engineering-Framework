@@ -1,0 +1,27 @@
+{
+  "$comment": "Opt-in hook examples. Merge what you need into <project>/.claude/settings.json. spec-gate.sh enforces strict spec-first mode (see its header for install + escape hatch). The PostToolUse example runs your linter after every edit — replace the command with your project's.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/spec-gate.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'REPLACE ME, e.g.: npm run lint --silent || exit 2'"
+          }
+        ]
+      }
+    ]
+  }
+}

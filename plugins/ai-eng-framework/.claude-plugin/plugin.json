@@ -1,0 +1,7 @@
+{
+  "name": "ai-eng-framework",
+  "version": "1.1.0",
+  "description": "Spec-first AI-engineering workflow for Claude Code: lifecycle skills, quality skills, core reviewer subagents, and enforcement templates (CI quality gates, opt-in hooks). English-only artifacts.",
+  "author": { "name": "Innogrators", "email": "philipp.koestner@innogrators.com", "url": "https://github.com/innogrators" },
+  "repository": "https://github.com/innogrators/AI-Engineering-Framework"
+}

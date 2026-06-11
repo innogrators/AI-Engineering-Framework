@@ -1,0 +1,53 @@
+# Quality gates — GitHub Actions template.
+# Copy to <project>/.github/workflows/quality-gates.yml and replace the
+# placeholder commands with the ones from your project CLAUDE.md
+# ("Run/test commands" / "Quality gates" sections).
+#
+# This is the enforcement layer of the ai-eng-framework: skills and reviewers
+# ask for these gates; CI is what actually blocks a merge when they are red.
+# Pair it with branch protection: require this workflow on the default branch.
+
+name: quality-gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # --- Toolchain setup: replace with your stack ---------------------
+      # - uses: actions/setup-node@v4
+      #   with: { node-version: 22, cache: npm }
+      # - uses: actions/setup-python@v5
+      #   with: { python-version: "3.12", cache: pip }
+
+      - name: Install dependencies
+        run: echo "REPLACE ME, e.g. npm ci" && exit 1
+
+      - name: Typecheck
+        run: echo "REPLACE ME, e.g. npm run typecheck" && exit 1
+
+      - name: Lint
+        run: echo "REPLACE ME, e.g. npm run lint" && exit 1
+
+      - name: Tests with coverage thresholds
+        # Enforce the thresholds from CLAUDE.md (default: domain >= 90%, overall >= 80%)
+        # in the test runner config, not here — then a drop fails this step.
+        run: echo "REPLACE ME, e.g. npm test -- --coverage" && exit 1
+
+      - name: Dependency audit
+        # No High/Critical at release (or documented exception).
+        run: echo "REPLACE ME, e.g. npm audit --audit-level=high" && exit 1
+
+  # Optional: E2E for critical paths on PRs to main. Uncomment and adapt.
+  # e2e:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Critical-path E2E
+  #       run: echo "REPLACE ME, e.g. npx playwright test --grep @critical"
