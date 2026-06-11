@@ -1,0 +1,55 @@
+# Quality gates (ratchet variant) — GitHub Actions template for brownfield repos.
+# Copy to <project>/.github/workflows/quality-gates.yml and replace the
+# placeholder commands with the ones from your project CLAUDE.md.
+#
+# Difference to the core quality-gates.yml: typecheck, lint, and dependency
+# audit are hard gates from day one, but coverage is a RATCHET — untested
+# legacy code cannot meet a fixed threshold, so the gate only forbids getting
+# worse. Mechanism: .coverage-baseline in the repo holds the current overall
+# percentage; the gate fails if actual coverage drops below it. Raising the
+# baseline is a deliberate commit ("ratchet up"), made whenever
+# characterization tests or new tested code push coverage higher.
+#
+# Once hardening is done, switch to the core quality-gates.yml (fixed
+# thresholds + spec-approval-guard + requirement-traceability).
+# GitHub-Actions syntax, but plain shell — ports to GitLab CI / Azure DevOps.
+
+name: quality-gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: echo "REPLACE ME, e.g. npm ci" && exit 1
+
+      - name: Typecheck
+        run: echo "REPLACE ME, e.g. npm run typecheck" && exit 1
+
+      - name: Lint
+        run: echo "REPLACE ME, e.g. npm run lint" && exit 1
+
+      - name: Dependency audit
+        run: echo "REPLACE ME, e.g. npm audit --audit-level=high" && exit 1
+
+      - name: Tests
+        run: echo "REPLACE ME, e.g. npm test -- --coverage" && exit 1
+
+      - name: Coverage ratchet
+        run: |
+          # Print the current overall coverage percentage as a bare number,
+          # e.g. extract it from your runner's summary file.
+          ACTUAL=$(echo "REPLACE ME, e.g. jq .total.lines.pct coverage/coverage-summary.json" && exit 1)
+          BASELINE=$(cat .coverage-baseline)
+          echo "coverage: actual ${ACTUAL}% / baseline ${BASELINE}%"
+          if [ "$(printf '%s\n' "$BASELINE" "$ACTUAL" | sort -g | head -1)" != "$BASELINE" ]; then
+            echo "::error::Coverage ${ACTUAL}% dropped below baseline ${BASELINE}%. Add tests or revert; never lower .coverage-baseline to pass."
+            exit 1
+          fi

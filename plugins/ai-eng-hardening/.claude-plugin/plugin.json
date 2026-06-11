@@ -1,0 +1,7 @@
+{
+  "name": "ai-eng-hardening",
+  "version": "1.0.0",
+  "description": "Brownfield entry path: retroactively harden existing, untested, or AI-generated codebases — full-codebase audit, as-is specs, characterization tests, coverage ratchet. Companion to ai-eng-framework.",
+  "author": { "name": "Innogrators", "email": "philipp.koestner@innogrators.com", "url": "https://github.com/innogrators" },
+  "repository": "https://github.com/innogrators/AI-Engineering-Framework"
+}

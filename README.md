@@ -25,6 +25,7 @@ Finally, all generated artifacts — code, comments, commits, specs, docs — ar
 ## What's inside
 - **ai-eng-framework** (lean core): lifecycle and quality skills, 3 core reviewers, and templates for project setup, CI quality gates, and opt-in hooks. Use this in every project.
 - **ai-eng-reviewers-extended** (optional): extra specialized reviewers. Add only when a project needs them (multi-agent reviews cost ~4-7x tokens).
+- **ai-eng-hardening** (brownfield): entry path for existing, untested, or AI-generated codebases — full-codebase audit, as-is specs, characterization tests, coverage-ratchet CI. Requires the core plugin.
 
 ## Install
 ```bash
@@ -33,6 +34,8 @@ claude
 /plugin install ai-eng-framework@ai-eng-marketplace
 # optional:
 /plugin install ai-eng-reviewers-extended@ai-eng-marketplace
+# for existing/legacy codebases:
+/plugin install ai-eng-hardening@ai-eng-marketplace
 ```
 For local development of the framework itself: `/plugin marketplace add <path-to-this-repo>`. After editing a skill/agent in a running session: `/reload-plugins`; new agent files are picked up on session start. Refresh an installed marketplace with `/plugin marketplace update ai-eng-marketplace`.
 
@@ -51,6 +54,7 @@ The plugin ships the **process**; each project keeps its **specifics**; CI keeps
 .claude-plugin/marketplace.json     # marketplace manifest (repo root = marketplace)
 plugins/ai-eng-framework/           # core plugin: skills, agents, rules, templates, workflow
 plugins/ai-eng-reviewers-extended/  # optional extra reviewer agents
+plugins/ai-eng-hardening/           # brownfield path: audit, as-is specs, characterization tests, ratchet CI
 ```
 
 ## When NOT to use it
