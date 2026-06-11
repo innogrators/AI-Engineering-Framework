@@ -12,6 +12,10 @@
 # Limitations: this is a coarse gate — it checks that *some* approved spec
 # exists, not that the edit belongs to it. Right-size per project by adjusting
 # SOURCE_PATTERN, or do not install the hook at all and rely on CI gates only.
+#
+# Trust anchor: this hook only READS the APPROVED line. What makes the line
+# trustworthy is CODEOWNERS on specs/ + the spec-approval-guard CI job
+# (see templates/ci/) — without those, anyone can set it.
 
 set -euo pipefail
 

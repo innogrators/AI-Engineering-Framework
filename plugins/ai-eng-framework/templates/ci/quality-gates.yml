@@ -5,7 +5,13 @@
 #
 # This is the enforcement layer of the ai-eng-framework: skills and reviewers
 # ask for these gates; CI is what actually blocks a merge when they are red.
-# Pair it with branch protection: require this workflow on the default branch.
+# Pair it with branch protection (require this workflow on the default branch)
+# and with CODEOWNERS on specs/ (template: ci/CODEOWNERS) so spec approval is
+# an owner-reviewed PR, not a trusted text line.
+#
+# GitHub-Actions-only by implementation, not by concept: the gates and the two
+# guard jobs below are a handful of shell commands and port directly to
+# GitLab CI or Azure DevOps pipelines.
 
 name: quality-gates
 
@@ -43,6 +49,45 @@ jobs:
       - name: Dependency audit
         # No High/Critical at release (or documented exception).
         run: echo "REPLACE ME, e.g. npm audit --audit-level=high" && exit 1
+
+  # A spec may only flip to APPROVED in a standalone PR (reviewed by the
+  # CODEOWNERS of specs/) — never in the same PR as the implementation.
+  # Otherwise anyone (including Claude) could self-approve a spec and ship.
+  spec-approval-guard:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Approval flips must be standalone spec PRs
+        run: |
+          git fetch origin "${{ github.base_ref }}"
+          BASE="origin/${{ github.base_ref }}"
+          if ! git diff "$BASE"...HEAD -- specs/ | grep -q '^+.*Status: APPROVED'; then
+            exit 0  # no approval flip in this PR
+          fi
+          if git diff --name-only "$BASE"...HEAD | grep -vq '^specs/'; then
+            echo "::error::This PR flips a spec to APPROVED and also changes files outside specs/. Approve the spec in a separate PR reviewed by the specs/ code owners."
+            exit 1
+          fi
+
+  # Every PR must be traceable to a requirement, or explicitly declare itself
+  # trivial. Skips chore:/docs: PRs by convention.
+  requirement-traceability:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR references a requirement ID
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s' "$TITLE" | grep -Eq '^(chore|docs)[(:]' && exit 0
+          printf '%s\n%s' "$TITLE" "$BODY" | grep -Eq '(FR|NFR)-[A-Z]+-[0-9]+' && exit 0
+          printf '%s' "$BODY" | grep -q 'No-Req: trivial' && exit 0
+          echo "::error::PR must reference a requirement ID (FR-AREA-NNN / NFR-CATEGORY-NNN) or state 'No-Req: trivial' in the body."
+          exit 1
 
   # Optional: E2E for critical paths on PRs to main. Uncomment and adapt.
   # e2e:

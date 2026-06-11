@@ -1,0 +1,10 @@
+# Copy to <project>/.github/CODEOWNERS and set real owners.
+#
+# Combined with branch protection ("Require a pull request before merging" +
+# "Require review from Code Owners"), every change under specs/ — including
+# flipping a spec to "Status: APPROVED" — needs an owner-reviewed PR.
+# This is what makes the APPROVED line trustworthy: the spec-gate hook and the
+# lifecycle skills only read it; CODEOWNERS + the spec-approval-guard CI job
+# enforce who can write it.
+
+/specs/ @your-org/spec-approvers

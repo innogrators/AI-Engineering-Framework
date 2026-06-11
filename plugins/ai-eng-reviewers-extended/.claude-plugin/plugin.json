@@ -1,6 +1,6 @@
 {
   "name": "ai-eng-reviewers-extended",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Additional specialized reviewer/advisor subagents for orchestrated reviews. Companion to ai-eng-framework.",
   "author": { "name": "Innogrators", "email": "philipp.koestner@innogrators.com", "url": "https://github.com/innogrators" },
   "repository": "https://github.com/innogrators/AI-Engineering-Framework"

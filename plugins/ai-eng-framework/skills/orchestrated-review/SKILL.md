@@ -10,7 +10,7 @@ allowed-tools: Read, Grep, Glob, Task
 
 **Cost note:** multi-agent uses roughly 4-7x the tokens. Do **not** start every reviewer by default. Choose based on the diff:
 - Default set: `security-reviewer`, `qa-tester`, `skeptical-edge-case-reviewer`.
-- + others from the extended plugin (code-quality, maintainability, frontend/backend, deployment) only when relevant.
+- + others from the extended plugin (requirements, architecture, frontend, maintainability, deployment) only when their lens is actually relevant to the diff.
 Reviewers run **read-only** and cannot change anything.
 
 **Steps:**
