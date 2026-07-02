@@ -7,7 +7,7 @@ Spec-first AI-engineering workflow for Claude Code. Provides lifecycle skills, q
 - Quality (auto): `review-change`, `unit-testing`, `secure-coding`. (`review-change` is named to avoid colliding with Claude Code's built-in `/code-review`.)
 
 ## Agents (shipped by this plugin, own context, read-only)
-`security-reviewer`, `qa-tester`, `skeptical-edge-case-reviewer`. (More in `ai-eng-reviewers-extended`.) Models are pinned (`model: sonnet`) deliberately to bound multi-agent cost; revisit the pins as models evolve.
+`security-reviewer`, `qa-tester`, `skeptical-edge-case-reviewer`. (More in `ai-eng-reviewers-extended`.) Models are pinned (`model: sonnet`) deliberately to bound multi-agent cost — no agent inherits the session model (see "Model tiers & cost" in the repo README); revisit the pins as models evolve.
 
 ## Resources (copy into your project)
 - `templates/CLAUDE.base.md` -> your project root as `CLAUDE.md` (fill the project sections incl. domain invariants).

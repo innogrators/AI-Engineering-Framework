@@ -12,7 +12,7 @@ Optional specialized reviewer/advisor subagents that complement `ai-eng-framewor
 
 The value of a subagent over "main agent + checklist" is its separate context window — so each agent here covers a lens the core three reviewers do not. Generic diff reviewers that duplicated the core `review-change` checklist (`code-quality-reviewer`, `backend-engineer`) were merged into `maintainability-reviewer` in 1.2.0.
 
-Models are pinned deliberately (`sonnet`, `haiku` for the cheap lens) to keep multi-agent cost bounded; revisit the pins as models evolve.
+Models are pinned deliberately to keep multi-agent cost bounded — no agent inherits the session model. Judgment lenses (`requirements-analyst`, `solution-architect`, `frontend-engineer`) run on `sonnet`; mechanical checklist/transcription lenses (`maintainability-reviewer`, `deployment-reviewer`, `documentation-writer`) run on `haiku`. See "Model tiers & cost" in the repo README; revisit the pins as models evolve.
 
 Used by the `orchestrated-review` skill when you select them, e.g.:
 "Run orchestrated-review with security, qa, maintainability and skeptical reviewers."

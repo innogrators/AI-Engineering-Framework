@@ -27,6 +27,19 @@ Finally, all generated artifacts — code, comments, commits, specs, docs — ar
 - **ai-eng-reviewers-extended** (optional): extra specialized reviewers. Add only when a project needs them (multi-agent reviews cost ~4-7x tokens).
 - **ai-eng-hardening** (brownfield): entry path for existing, untested, or AI-generated codebases — full-codebase audit, as-is specs, characterization tests, coverage-ratchet CI. Requires the core plugin.
 
+## Model tiers & cost
+
+Every agent in this marketplace pins its model explicitly in the agent frontmatter — no agent inherits the orchestrating session's model. Spawning a top-tier orchestrator therefore never fans out into top-tier subagents; the "expensive model spawns seven copies of itself" failure mode cannot happen with these agents.
+
+The tiering follows the nature of the lens, not its importance:
+
+- **`sonnet`** — lenses that require judgment on unfamiliar code: `security-reviewer`, `skeptical-edge-case-reviewer`, `qa-tester`, `solution-architect`, `requirements-analyst`, `frontend-engineer`.
+- **`haiku`** — mechanical checklist or transcription work: `maintainability-reviewer`, `deployment-reviewer`, `documentation-writer`.
+
+Orchestration (deciding *which* reviewers a diff needs, weighing findings, implementing) stays in your main session on whatever model you chose — that is the one place a stronger model pays for itself.
+
+To override a pin for one project, copy the agent file into the project's `.claude/agents/` and change the `model:` line — a project-level agent with the same name shadows the plugin's. Model choice in Claude Code is static per agent definition; there is no runtime router, which is also why the pins are conservative defaults rather than a config option. Revisit them as models evolve.
+
 ## Install
 ```bash
 claude

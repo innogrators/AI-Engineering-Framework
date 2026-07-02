@@ -3,6 +3,11 @@
 All notable changes to the plugins in this marketplace. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com); versions are the marketplace's.
 
+## [1.3.1] - 2026-07-02
+### Changed
+- Model tiering sharpened (#1): `deployment-reviewer` and `documentation-writer` moved from `sonnet` to `haiku` — both are mechanical checklist/transcription lenses. Judgment lenses stay on `sonnet`.
+- New "Model tiers & cost" section in the repo README: documents that every agent pins its model (none inherits the session model), the sonnet/haiku tiering rationale, and how to override a pin per project via `.claude/agents/`.
+
 ## [1.3.0] - 2026-06-11
 ### Added
 - New plugin `ai-eng-hardening` (1.0.0), the brownfield entry path: `/harden-audit` (full-codebase audit producing `docs/hardening-backlog.md`), `/reverse-spec` (as-is specs of actual behavior), `/characterization-tests` (freeze behavior before refactoring), an as-is spec template, and a coverage-ratchet CI variant (`.coverage-baseline`; gates only forbid getting worse). Requires `ai-eng-framework`.
